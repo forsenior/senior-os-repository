@@ -1,3 +1,4 @@
+name: Build packages and publish repo to github pages
 on:
   workflow_dispatch:
   push:
