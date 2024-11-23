@@ -1,0 +1,114 @@
+on:
+  workflow_dispatch:
+  push:
+
+
+jobs:
+  aur_deps:
+    name: Build aur dependencies
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Build Packages
+        uses: kopp/build-aur-packages@v1
+        with:
+          packages: |-
+            python-dataclass-wizard
+            python-screeninfo
+      - name: Upload dependencies artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: senior-apps-deps
+          path: .
+  build:
+    name: Build
+    permissions: 
+      contents: write
+    runs-on: ubuntu-24.04
+    needs: aur_deps
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v4
+        
+      - name: Configure GPG key
+        run:
+          echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+          
+      - name: Makepkg Build and Check packages
+        id: makepkg
+        uses: edlanglois/pkgbuild-action@v1
+        with:
+          aurDeps: true
+      - name: Print package files
+        run: |
+          echo "Successfully created the following package archives"
+          echo "Package: ${{ steps.makepkg.outputs.pkgfile0 }}"
+          echo "Package: ${{ steps.makepkg.outputs.pkgfile1 }}"
+          echo "Package: ${{ steps.makepkg.outputs.pkgfile2 }}"
+      - name: Upload sconf artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: senior-apps
+          path: |-
+            ${{ steps.makepkg.outputs.pkgfile0 }}
+            ${{ steps.makepkg.outputs.pkgfile1 }}
+            ${{ steps.makepkg.outputs.pkgfile2 }}
+      - name: Download dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: senior-apps-deps
+      - name: Create arch repo
+        run: |-
+          ls -lash
+          sudo apt-get update
+          sudo apt-get install pacman-package-manager archlinux-keyring libarchive-tools cmake -y
+          mkdir -p sapps/repo/x86_64
+          pushd .
+          cp **.pkg.tar.zst sapps/repo/x86_64
+          cd sapps/repo/x86_64
+          for pkg in *.pkg.tar.zst; do
+            gpg --output $pkg.sig --detach-sign $pkg
+          done
+          ls -lash
+          repo-add --verify --sign sapps.db.tar.gz *.pkg.tar.zst
+          popd
+          git clone https://github.com/libthinkpad/apindex.git
+          pushd .
+          cd apindex
+          cmake . -DCMAKE_INSTALL_PREFIX=/usr
+          sudo make install
+          popd
+          pushd .
+          cd sapps/
+          apindex .
+          popd
+      - name: Publish repo artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: sapps/
+      - name: Release SeniorOS
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "Development Build"
+          files: |
+            *.pkg.tar.zst
+          
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy repo to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

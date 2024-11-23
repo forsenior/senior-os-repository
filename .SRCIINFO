@@ -1,0 +1,25 @@
+pkgbase = python-sapps
+	pkgdesc = Python SeniorOS apps package
+	pkgver = 0.2.0
+	pkgrel = 1
+	url = https://github.com/forsenior/senior-os
+	arch = any
+	license = mit
+	makedepends = python-poetry
+	depends = python
+	depends = python-pyqt5
+	depends = python-dataclass-wizard
+	depends = python-validate-email
+	depends = python-pillow
+	depends = python-pyqt5-webengine
+	depends = python-screeninfo
+	depends = python-requests
+	depends = python-chardet
+	source = git+https://github.com/forsenior/senior-os.git
+	sha256sums = SKIP
+
+pkgname = python-sconf
+
+pkgname = python-sweb
+
+pkgname = python-smail
