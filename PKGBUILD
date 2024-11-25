@@ -18,7 +18,7 @@ build() {
     python -m build --wheel --no-isolation
     cd "${srcdir}/senior-os/smail"
     python -m build --wheel --no-isolation
-    cd "${srcdir}/senior-os/smail"
+    cd "${srcdir}/senior-os/sweb"
     python -m build --wheel --no-isolation
 }
 
