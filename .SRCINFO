@@ -1,6 +1,6 @@
 pkgbase = python-sapps
 	pkgdesc = Python SeniorOS apps package
-	pkgver = 0.2.0
+	pkgver = `date +%s`
 	pkgrel = 1
 	url = https://github.com/forsenior/senior-os
 	arch = any
