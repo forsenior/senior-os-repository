@@ -69,7 +69,7 @@ jobs:
         run: |-
           ls -lash
           sudo pacman -Syy
-          sudo pacman -S --noconfirm cmake
+          sudo pacman -S --noconfirm cmake git python base-devel
           mkdir -p sapps/repo/x86_64
           pushd .
           cp **.pkg.tar.zst sapps/repo/x86_64
