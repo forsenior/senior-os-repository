@@ -16,6 +16,7 @@ jobs:
           packages: |-
             python-dataclass-wizard
             python-screeninfo
+            python-vcolorpicker
       - name: Upload dependencies artifact
         uses: actions/upload-artifact@v4
         with:
