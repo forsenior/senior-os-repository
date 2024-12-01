@@ -35,8 +35,9 @@ jobs:
         
       - name: Configure GPG key
         run: |
+          useradd -m runner
           echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
-          makepkg --printsrcinfo > .SRCINFO
+          sudo -u runner makepkg --printsrcinfo > .SRCINFO
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
           
