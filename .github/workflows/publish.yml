@@ -26,6 +26,9 @@ jobs:
       contents: write
     runs-on: ubuntu-24.04
     needs: aur_deps
+    container: 
+      image: archlinux
+      options: --privileged
     steps:
       - name: Checkout files
         uses: actions/checkout@v4
@@ -33,8 +36,6 @@ jobs:
       - name: Configure GPG key
         run: |
           echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
-          sudo apt-get update
-          sudo apt-get install makepkg -y
           makepkg --printsrcinfo > .SRCINFO
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
@@ -65,8 +66,8 @@ jobs:
       - name: Create arch repo
         run: |-
           ls -lash
-          sudo apt-get update
-          sudo apt-get install pacman-package-manager archlinux-keyring libarchive-tools cmake -y
+          sudo pacman -Syy
+          sudo pacman -S --noconfirm cmake
           mkdir -p sapps/repo/x86_64
           pushd .
           cp **.pkg.tar.zst sapps/repo/x86_64
