@@ -36,6 +36,7 @@ jobs:
       - name: Configure GPG key
         run: |
           useradd -m runner
+          pacman -Syy --noconfirm sudo
           echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
           sudo -u runner makepkg --printsrcinfo > .SRCINFO
         env:
