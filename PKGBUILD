@@ -1,5 +1,5 @@
 pkgbase=python-sapps
-pkgname=(python-sconf python-sweb python-smail)
+pkgname=(python-sconf python-sweb python-smail python-srun)
 pkgver=`date +%Y%m%d%H%M`
 pkgrel=1
 pkgdesc="Python SeniorOS apps package"
@@ -20,6 +20,8 @@ build() {
     python -m build --wheel --no-isolation
     cd "${srcdir}/senior-os/sweb"
     python -m build --wheel --no-isolation
+    cd "${srcdir}/senior-os/srun"
+    python -m build --wheel --no-isolation
 }
 
 package_python-sconf() {
@@ -34,5 +36,10 @@ package_python-sweb() {
 
 package_python-smail(){
     cd "${srcdir}/senior-os/smail"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+}
+
+package_python-srun(){
+    cd "${srcdir}/senior-os/srun"
     python -m installer --destdir="$pkgdir" dist/*.whl
 }
