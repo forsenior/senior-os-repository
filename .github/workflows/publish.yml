@@ -2,7 +2,8 @@ name: Build packages and publish repo to github pages
 on:
   workflow_dispatch:
   push:
-
+  repository_dispatch:
+    types: [build-packages]
 
 jobs:
   aur_deps:
