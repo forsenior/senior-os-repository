@@ -1,6 +1,6 @@
 pkgbase=python-sapps
 pkgname=(python-sconf python-sweb python-smail python-srun)
-pkgver=`date +%Y%m%d%H%M`
+pkgver=`date +%Y%m%d%H`
 pkgrel=1
 pkgdesc="Python SeniorOS apps package"
 arch=('any')
