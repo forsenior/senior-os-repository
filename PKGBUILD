@@ -7,7 +7,7 @@ arch=('any')
 url="https://github.com/forsenior/senior-os"
 source_url="https://github.com/forsenior/senior-os.git"
 license=('mit')
-depends=(python python-pyqt5 python-dataclass-wizard-git python-validate-email python-pillow python-pyqt5-webengine python-screeninfo python-requests python-chardet python-vcolorpicker python-qtpy)
+depends=(python python-pyqt5 python-dataclass-wizard python-validate-email python-pillow python-pyqt5-webengine python-screeninfo python-requests python-chardet python-vcolorpicker python-qtpy)
 source=("git+""$source_url")
 sha256sums=('SKIP')
 
