@@ -9,6 +9,9 @@ jobs:
   aur_deps:
     name: Build aur dependencies
     runs-on: ubuntu-22.04
+    container: 
+      image: archlinux
+      options: --privileged
     steps:
       - name: Build Packages
         uses: kopp/build-aur-packages@v1
