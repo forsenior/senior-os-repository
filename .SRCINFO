@@ -1,6 +1,6 @@
 pkgbase = python-sapps
 	pkgdesc = Python SeniorOS apps package
-	pkgver = `date +%s`
+	pkgver = 2025032518
 	pkgrel = 1
 	url = https://github.com/forsenior/senior-os
 	arch = any
@@ -15,6 +15,9 @@ pkgbase = python-sapps
 	depends = python-screeninfo
 	depends = python-requests
 	depends = python-chardet
+	depends = python-vcolorpicker
+	depends = python-qtpy
+	depends = python-joblib
 	source = git+https://github.com/forsenior/senior-os.git
 	sha256sums = SKIP
 
@@ -23,3 +26,5 @@ pkgname = python-sconf
 pkgname = python-sweb
 
 pkgname = python-smail
+
+pkgname = python-srun
