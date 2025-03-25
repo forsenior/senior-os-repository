@@ -19,6 +19,10 @@ pkgbase = python-sapps
 	depends = python-qtpy
 	depends = python-joblib
 	depends = python-pycryptodome
+	depends = python-numpy
+	depends = python-scipy
+	depends = python-threadpoolctl
+	depends = python-scikit-learn
 	source = git+https://github.com/forsenior/senior-os.git
 	sha256sums = SKIP
 
