@@ -70,7 +70,33 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: senior-apps-deps
+      
       - name: Create arch repo
+        run: |-
+           ls -lash
+           sudo pacman -Syy
+           sudo pacman -S --noconfirm cmake git python base-devel
+           mkdir -p sapps/repo/x86_64
+           pushd .
+           cp **.pkg.tar.zst sapps/repo/x86_64
+           cd sapps/repo/x86_64
+           for pkg in *.pkg.tar.zst; do
+             gpg --output $pkg.sig --detach-sign $pkg
+           done
+           ls -lash
+           repo-add --verify --sign sapps.db.tar.gz *.pkg.tar.zst
+           popd
+           git clone https://github.com/libthinkpad/apindex.git
+           pushd .
+           cd apindex
+           cmake . -DCMAKE_INSTALL_PREFIX=/usr
+           sudo make install
+           popd
+           pushd .
+           cd sapps/
+           apindex .
+           popd
+      - name: Create directory listing
         uses: jayanta525/github-pages-directory-listing@v4.0.0
         with:
           FOLDER: sapps      #directory to generate index
