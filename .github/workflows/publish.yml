@@ -14,7 +14,7 @@ jobs:
       options: --privileged
     steps:
       - name: Build Packages
-        uses: VUTxvojac04/build-aur-packages@v1.3
+        uses: kopp/build-aur-packages
         with:
           packages: |-
             python-dataclass-wizard
